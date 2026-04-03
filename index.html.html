@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Максим Журавков — Бесплатный тест гипотез роста MAX-канала</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Geologica:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #07070e;
+  --white: #eeedf8;
+  --accent: #a78bfa;
+  --accent2: #818cf8;
+  --accent-dim: rgba(167,139,250,0.1);
+  --gray: #6b6b8a;
+  --gray-light: #a8a8c8;
+  --border: rgba(167,139,250,0.13);
+  --danger: #f87171;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse 90% 55% at 50% -5%, rgba(109,60,200,0.32) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 30% at 85% 85%, rgba(79,70,229,0.18) 0%, transparent 60%);
+  color: var(--white);
+  font-family: 'Geologica', sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+@media print { body { display: none !important; } }
+
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: .4;
+}
+
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 22px; position: relative; z-index: 1; }
+
+/* ── NAV ── */
+nav { padding: 24px 0; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+.nav-name { font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .05em; }
+.nav-tag { font-size: 11px; color: var(--gray); letter-spacing: .04em; }
+
+/* ── HERO ── */
+.hero { padding: 72px 0 56px; }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 28px;
+}
+.eyebrow span { width: 28px; height: 1px; background: var(--accent); display: block; }
+
+.hero h1 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(28px, 5.5vw, 52px);
+  font-weight: 900; line-height: 1.08; letter-spacing: -.025em;
+  margin-bottom: 24px;
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+
+.hero-hook {
+  font-size: clamp(17px, 2.5vw, 21px);
+  color: var(--gray-light); max-width: 580px;
+  line-height: 1.65; margin-bottom: 20px;
+  font-weight: 300;
+}
+.hero-hook strong { color: var(--white); font-weight: 500; }
+
+.hero-sub {
+  font-size: 15px; color: var(--gray);
+  margin-bottom: 44px; max-width: 500px;
+}
+
+/* ── STATS ── */
+.stats {
+  display: flex; gap: 0;
+  border: 1px solid var(--border); border-radius: 14px;
+  overflow: hidden; margin-bottom: 64px;
+}
+.stat { flex: 1; padding: 20px 24px; position: relative; }
+.stat + .stat { border-left: 1px solid var(--border); }
+.stat-n { font-family: 'Unbounded', sans-serif; font-size: 26px; font-weight: 900; line-height: 1; margin-bottom: 4px; background: linear-gradient(135deg, #a78bfa, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.stat-l { font-size: 12px; color: var(--gray); line-height: 1.4; }
+
+/* ── SECTION LABEL ── */
+.sec-lbl { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--gray); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+.sec-lbl::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── PAIN BLOCK ── */
+.pain { padding: 0 0 56px; }
+
+.pain-intro {
+  font-size: clamp(18px, 2.8vw, 22px); font-weight: 500;
+  line-height: 1.5; margin-bottom: 32px; color: var(--white);
+}
+.pain-intro em { font-style: normal; color: var(--danger); }
+
+.pain-items { display: flex; flex-direction: column; gap: 0; }
+.pain-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 18px 0; border-bottom: 1px solid var(--border);
+  transition: padding-left .2s;
+}
+.pain-item:last-child { border-bottom: none; }
+.pain-item:hover { padding-left: 6px; }
+.pain-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.pain-text { font-size: 15px; color: var(--gray-light); line-height: 1.6; }
+.pain-text strong { color: var(--white); font-weight: 500; display: block; margin-bottom: 2px; font-size: 16px; }
+
+.pain-verdict {
+  margin-top: 28px;
+  background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(79,70,229,0.08));
+  border: 1px solid rgba(167,139,250,0.18);
+  border-radius: 12px; padding: 22px 24px;
+  font-size: 16px; line-height: 1.7; color: var(--white);
+}
+.pain-verdict strong { color: var(--accent); }
+
+/* ── OFFER ── */
+.offer {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, rgba(109,40,217,0.2) 0%, rgba(67,56,202,0.12) 100%);
+  border: 1px solid rgba(167,139,250,0.25);
+  border-radius: 20px; padding: 52px 44px;
+  margin: 0 0 56px;
+}
+.offer::before {
+  content: '';
+  position: absolute; top: -80px; right: -80px;
+  width: 260px; height: 260px;
+  background: radial-gradient(circle, rgba(167,139,250,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.offer::after {
+  content: '';
+  position: absolute; bottom: -60px; left: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.offer-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: #fff; font-family: 'Unbounded', sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; padding: 6px 14px; border-radius: 6px;
+  margin-bottom: 24px;
+}
+.offer-badge::before { content: '🎁'; font-size: 12px; }
+
+.offer h2 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(20px, 3.5vw, 30px);
+  font-weight: 900; line-height: 1.15; margin-bottom: 16px;
+}
+.offer h2 em { font-style: normal; color: var(--accent); }
+
+.offer-lead {
+  font-size: 17px; color: var(--gray-light);
+  line-height: 1.75; margin-bottom: 32px; max-width: 520px;
+  font-weight: 300;
+}
+.offer-lead strong { color: var(--white); font-weight: 500; }
+
+.offer-rows { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+.offer-row {
+  display: flex; align-items: flex-start; gap: 14px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px;
+}
+.offer-row-icon { font-size: 20px; flex-shrink: 0; }
+.offer-row-text { font-size: 14px; color: var(--gray-light); line-height: 1.55; }
+.offer-row-text strong { color: var(--white); font-weight: 500; display: block; margin-bottom: 2px; }
+
+/* ── SELECT BLOCK ── */
+.select-block {
+  background: rgba(0,0,0,0.25);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  padding: 18px 22px; margin-bottom: 32px;
+}
+.select-title { font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: .04em; margin-bottom: 8px; }
+.select-text { font-size: 13px; color: var(--gray-light); line-height: 1.65; }
+.select-text strong { color: var(--white); font-weight: 500; }
+
+/* ── CTA ── */
+.cta-wrap { position: relative; }
+.cta-btn {
+  display: block; width: 100%;
+  background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+  color: #fff; text-align: center; text-decoration: none;
+  font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 700;
+  letter-spacing: .03em; padding: 20px 32px; border-radius: 10px;
+  border: none; cursor: pointer;
+  box-shadow: 0 8px 32px rgba(124,58,237,0.35);
+  transition: transform .15s, box-shadow .15s;
+  position: relative; overflow: hidden;
+}
+.cta-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+}
+.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(124,58,237,0.45); }
+.cta-btn:active { transform: translateY(0); }
+.cta-note { text-align: center; font-size: 12px; color: var(--gray); margin-top: 12px; line-height: 1.6; }
+
+/* ── HOW ── */
+.how { padding: 0 0 56px; }
+.steps { position: relative; padding-left: 20px; }
+.steps::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, var(--accent), transparent); }
+.step { padding: 0 0 32px 28px; position: relative; }
+.step:last-child { padding-bottom: 0; }
+.step::before { content: ''; position: absolute; left: -4px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px rgba(167,139,250,0.5); }
+.step-num { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; font-weight: 500; }
+.step-title { font-family: 'Unbounded', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.step-text { font-size: 14px; color: var(--gray-light); line-height: 1.65; }
+
+/* ── WHO / NOT ── */
+.who { padding: 0 0 40px; }
+.who-items { display: flex; flex-direction: column; gap: 8px; }
+.who-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px; font-size: 15px; color: var(--white);
+  line-height: 1.5;
+}
+.who-dot { width: 7px; height: 7px; border-radius: 50%; background: linear-gradient(135deg, #a78bfa, #818cf8); flex-shrink: 0; margin-top: 5px; }
+
+.notfor {
+  background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px 24px; margin-bottom: 56px;
+}
+.notfor-title { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--gray); margin-bottom: 12px; }
+.notfor-items { display: flex; flex-direction: column; gap: 7px; }
+.notfor-item { font-size: 13px; color: var(--gray); display: flex; gap: 8px; }
+.notfor-item::before { content: '×'; color: #444; flex-shrink: 0; }
+
+/* ── FINAL ── */
+.final {
+  text-align: center; padding: 64px 0 80px;
+  border-top: 1px solid var(--border);
+}
+.final-pre { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+.final h2 { font-family: 'Unbounded', sans-serif; font-size: clamp(22px, 4vw, 38px); font-weight: 900; line-height: 1.15; margin-bottom: 14px; }
+.final h2 em { font-style: normal; color: var(--accent); }
+.final-sub { font-size: 16px; color: var(--gray-light); margin-bottom: 36px; max-width: 420px; margin-left: auto; margin-right: auto; line-height: 1.65; }
+
+/* ── FOOTER ── */
+footer { border-top: 1px solid var(--border); padding: 24px 0; display: flex; align-items: center; justify-content: space-between; }
+.footer-name { font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 700; color: var(--gray); }
+.footer-link { font-size: 12px; color: var(--gray); text-decoration: none; }
+.footer-link:hover { color: var(--accent); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.eyebrow { animation: fadeUp .5s ease both; }
+.hero h1 { animation: fadeUp .55s .07s ease both; }
+.hero-hook { animation: fadeUp .55s .14s ease both; }
+.hero-sub { animation: fadeUp .55s .2s ease both; }
+.stats { animation: fadeUp .55s .26s ease both; }
+
+/* ── WATERMARK ── */
+#wm { position: fixed; inset: 0; pointer-events: none; z-index: 9999; overflow: hidden; }
+.wm-t { position: absolute; font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 700; color: rgba(167,139,250,0.055); white-space: nowrap; letter-spacing: .1em; text-transform: uppercase; transform: rotate(-35deg); user-select: none; pointer-events: none; }
+
+/* ── MOBILE ── */
+@media (max-width: 600px) {
+  .wrap { padding: 0 16px; }
+  .hero { padding: 48px 0 36px; }
+  .stats { flex-direction: column; }
+  .stat + .stat { border-left: none; border-top: 1px solid var(--border); }
+  .stat { padding: 16px 20px; }
+  .stat-n { font-size: 22px; }
+  .offer { padding: 28px 20px; }
+  .offer h2 { font-size: 20px; }
+  .offer-lead { font-size: 15px; }
+  .pain-intro { font-size: 17px; }
+  .who-item { font-size: 14px; }
+  .final h2 { font-size: 22px; }
+  footer { flex-direction: column; gap: 8px; text-align: center; }
+}
+@media (hover: none) {
+  .cta-btn:hover { transform: none; box-shadow: 0 8px 32px rgba(124,58,237,0.35); }
+  .pain-item:hover { padding-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<div id="wm" aria-hidden="true"></div>
+
+<div class="wrap">
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-name">Максим Журавков</span>
+    <span class="nav-tag">MAX-продюсер</span>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow"><span></span>Только для серьёзных проектов</div>
+
+    <h1>Твой MAX-канал<br>должен <em>продавать.</em><br>Докажу — бесплатно.</h1>
+
+    <p class="hero-hook">
+      Я протестирую гипотезы роста твоего канала <strong>за свой счёт.</strong><br>
+      Ты платишь только рекламный бюджет. Смотришь на цифры. Сам решаешь.
+    </p>
+    <p class="hero-sub">Беру не всех. Максимум 2 проекта в месяц.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-n">100+</div>
+        <div class="stat-l">проектов за 4 года</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">10+</div>
+        <div class="stat-l">ниш инфобиза</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">0 ₽</div>
+        <div class="stat-l">за мою работу на тесте</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAIN -->
+  <section class="pain">
+    <p class="sec-lbl">Узнаёшь себя?</p>
+
+    <p class="pain-intro">
+      Большинство MAX-каналов онлайн-школ не продают.<br>
+      <em>И вот почему.</em>
+    </p>
+
+    <div class="pain-items">
+      <div class="pain-item">
+        <div class="pain-icon">✍️</div>
+        <div class="pain-text">
+          <strong>Контент есть — продаж нет</strong>
+          Посты выходят, подписчики приходят, но заявок нет. Кажется что дело в контенте. На самом деле — в стратегии.
+        </div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-icon">💸</div>
+        <div class="pain-text">
+          <strong>Реклама и посевы сливают бюджет</strong>
+          Трафик идёт, люди подписываются — и тишина. Потому что канал не упакован под продажи до запуска трафика.
+        </div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-icon">🔄</div>
+        <div class="pain-text">
+          <strong>Подрядчики обещали — не дали</strong>
+          Уже платил за MAX-продвижение. Красиво говорили, взяли деньги — ноль результата. И теперь непонятно кому вообще верить.
+        </div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-icon">🎯</div>
+        <div class="pain-text">
+          <strong>Один тест не сработал — и всё</strong>
+          «MAX не работает для нашей ниши» — говорит тот, кто попробовал одну гипотезу и сдался. Хотя нужна была вторая. Или четвёртая.
+        </div>
+      </div>
+    </div>
+
+    <div class="pain-verdict">
+      В MAX не бывает «не работает».<br>
+      <strong>Бывает «ещё не нашли правильную гипотезу».</strong><br>
+      За 4 года и больше сотни проектов я убедился в этом в каждой нише.
+    </div>
+  </section>
+
+  <!-- OFFER -->
+  <section class="offer">
+    <div class="offer-badge">Моё предложение</div>
+    <h2>Бесплатный тест гипотез роста<br><em>твоего MAX-канала</em></h2>
+
+    <p class="offer-lead">
+      Я настолько уверен в результате, что <strong>готов работать бесплатно</strong> — пока ты не увидишь цифры. Именно поэтому я так тщательно выбираю проекты.
+    </p>
+
+    <div class="offer-rows">
+      <div class="offer-row">
+        <div class="offer-row-icon">🔍</div>
+        <div class="offer-row-text">
+          <strong>Разбор канала и аудитории</strong>
+          Нахожу где именно теряются заявки и что мешает продажам прямо сейчас
+        </div>
+      </div>
+      <div class="offer-row">
+        <div class="offer-row-icon">💡</div>
+        <div class="offer-row-text">
+          <strong>Гипотезы и стратегия трафика</strong>
+          Формирую что тестируем через рекламу и посевы — и почему именно это
+        </div>
+      </div>
+      <div class="offer-row">
+        <div class="offer-row-icon">🚀</div>
+        <div class="offer-row-text">
+          <strong>Запуск теста — за мой счёт</strong>
+          Веду рекламу и посевы полностью бесплатно. Ты платишь только рекламный бюджет
+        </div>
+      </div>
+      <div class="offer-row">
+        <div class="offer-row-icon">📊</div>
+        <div class="offer-row-text">
+          <strong>Цифры — ты решаешь</strong>
+          Показываю результат. Хочешь продолжать — обсуждаем условия. Нет — никаких обязательств
+        </div>
+      </div>
+    </div>
+
+    <div class="select-block">
+      <div class="select-title">Важно — беру не всех</div>
+      <div class="select-text">
+        Я работаю бесплатно — поэтому могу выбирать. <strong>Берусь только за проекты</strong> где есть реальный продукт, рекламный бюджет и готовность тестировать. Если на созвоне понимаю что не смогу дать результат — скажу честно и не возьмусь.
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <a href="https://t.me/ZhuravkovM" class="cta-btn">Записаться на созвон → бесплатно</a>
+      <p class="cta-note">Созвон 20–30 минут · Без обязательств · Максимум 2 проекта в месяц</p>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section class="how">
+    <p class="sec-lbl">Как это работает</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">Шаг 01</div>
+        <div class="step-title">Созвон — знакомимся</div>
+        <div class="step-text">Рассказываешь о проекте: ниша, продукт, аудитория, что уже пробовали. Я смотрю подходим ли мы друг другу — и говорю честно.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">Шаг 02</div>
+        <div class="step-title">Разбор и гипотезы</div>
+        <div class="step-text">Изучаю канал, аудиторию, конкурентов. Формирую конкретные гипотезы — что тестируем через рекламу и посевы и почему именно это даст результат.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">Шаг 03</div>
+        <div class="step-title">Тест — за мой счёт</div>
+        <div class="step-text">Запускаю рекламу и посевы. Полностью веду процесс — ты только выделяешь рекламный бюджет. Моя работа бесплатно.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">Шаг 04</div>
+        <div class="step-title">Цифры — твоё решение</div>
+        <div class="step-text">Показываю результат теста. Видишь что работает — решаешь продолжать. Хочешь уйти — никаких вопросов и обязательств.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO -->
+  <section class="who">
+    <p class="sec-lbl">Для кого это</p>
+    <div class="who-items">
+      <div class="who-item"><div class="who-dot"></div>Хочешь MAX-канал который растёт и приносит заявки — а не просто существует</div>
+      <div class="who-item"><div class="who-dot"></div>Уже платил за продвижение в MAX — результата не было — хочешь попробовать без риска</div>
+      <div class="who-item"><div class="who-dot"></div>Нужен надёжный партнёр надолго — не подрядчик который исчезнет через месяц</div>
+    </div>
+  </section>
+
+  <!-- NOT FOR -->
+  <div class="notfor">
+    <div class="notfor-title">Не подойдёт если</div>
+    <div class="notfor-items">
+      <div class="notfor-item">Нет готового продукта или услуги</div>
+      <div class="notfor-item">Нет рекламного бюджета на тест</div>
+      <div class="notfor-item">Ищешь волшебника который всё сделает без твоего участия</div>
+    </div>
+  </div>
+
+  <!-- FINAL CTA -->
+  <section class="final" id="form">
+    <div class="final-pre">Осталось 2 места в этом месяце</div>
+    <h2>Готов проверить<br>на <em>своём</em> канале?</h2>
+    <p class="final-sub">Запишись на созвон. Расскажи о проекте. Если подходим — начнём тест уже на этой неделе.</p>
+    <a href="https://t.me/ZhuravkovM" class="cta-btn" style="max-width:380px;margin:0 auto 12px;">Написать</a>
+    <p class="cta-note">Отвечаю в течение нескольких часов</p>
+  </section>
+
+  <div style="text-align:center;padding:32px 0 40px;border-top:1px solid var(--border);">
+    <p style="font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;color:var(--gray);line-height:1.6;letter-spacing:.01em;">
+      Пока ты читаешь это —<br>
+      <span style="color:var(--accent);">чей-то канал уже приносит заявки.</span>
+    </p>
+  </div>
+
+  <footer>
+    <span class="footer-name">Максим Журавков</span>
+    <a href="https://t.me/ZhuravkovM" class="footer-link">@ZhuravkovM</a>
+  </footer>
+
+</div>
+
+<!-- WATERMARK -->
+<script>
+(function(){
+  // Водяные знаки
+  var ov = document.getElementById('wm');
+  var texts = ['© Максим Журавков','@ZhuravkovM','MAX-продюсер'];
+  var cols = Math.ceil(window.innerWidth/260)+2;
+  var rows = Math.ceil(window.innerHeight/180)+3;
+  for(var r=0;r<rows;r++){for(var c=0;c<cols;c++){var el=document.createElement('div');el.className='wm-t';el.textContent=texts[(r+c)%texts.length];el.style.left=(c*260-60)+'px';el.style.top=(r*180-40)+'px';ov.appendChild(el);}}
+
+  // Блок правой кнопки
+  document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+
+  // Блок горячих клавиш
+  document.addEventListener('keydown',function(e){
+    if((e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))||(e.ctrlKey&&e.shiftKey&&['i','j','c'].includes(e.key.toLowerCase()))||e.key==='F12'){e.preventDefault();return false;}
+  });
+
+  // Блок drag
+  document.addEventListener('dragstart',function(e){e.preventDefault();});
+
+  // DevTools детект
+  (function(){var t=160;function c(){if(window.outerWidth-window.innerWidth>t||window.outerHeight-window.innerHeight>t){document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#07070e;color:#a78bfa;font-family:monospace;font-size:13px;letter-spacing:.1em;">© Максим Журавков · @ZhuravkovM</div>';}}setInterval(c,1000);})();
+
+  // Консоль
+  console.log('%c© Максим Журавков','color:#a78bfa;font-size:16px;font-weight:bold;font-family:monospace;');
+  console.log('%c@ZhuravkovM · MAX-продюсер','color:#6b6b8a;font-size:11px;font-family:monospace;');
+  console.log('%cСтраница защищена. Копирование запрещено.','color:#444;font-size:10px;font-family:monospace;');
+})();
+</script>
+</body>
+</html>
